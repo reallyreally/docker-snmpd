@@ -18,7 +18,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 
 EXPOSE 161 161/udp
 
-RUN apk add --update --no-cache linux-headers alpine-sdk curl findutils sed && \
+RUN apk add --update --no-cache linux-headers alpine-sdk curl findutils sed python2 && \
   mkdir -p /etc/snmp && \
   curl -L "https://sourceforge.net/projects/net-snmp/files/5.4.5-pre-releases/net-snmp-5.4.5.rc1.tar.gz/download" -o net-snmp.tgz && \
   curl -L "https://raw.githubusercontent.com/librenms/librenms-agent/master/snmp/nginx-stats" -o /etc/snmp/nginx-stats && \
