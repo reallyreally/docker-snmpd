@@ -22,6 +22,7 @@ RUN apk add --update --no-cache linux-headers alpine-sdk curl findutils sed pyth
   mkdir -p /etc/snmp && \
   curl -L "https://sourceforge.net/projects/net-snmp/files/5.4.5-pre-releases/net-snmp-5.4.5.rc1.tar.gz/download" -o net-snmp.tgz && \
   curl -L "https://raw.githubusercontent.com/librenms/librenms-agent/master/snmp/nginx-stats" -o /etc/snmp/nginx-stats && \
+  sed -i "s!http://127.0.0.1/nginx-status!http://nginx/nginx-status!g" /etc/snmp/nginx-stats && \  
   chmod +x /etc/snmp/nginx-stats && \
   tar zxvf net-snmp.tgz && \
   cd net-snmp-* && \
