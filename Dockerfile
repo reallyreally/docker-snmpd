@@ -22,13 +22,16 @@ RUN apk add --update --no-cache linux-headers alpine-sdk curl findutils sed pyth
   mkdir -p /etc/snmp && \
   curl -L "https://sourceforge.net/projects/net-snmp/files/5.4.5-pre-releases/net-snmp-5.4.5.rc1.tar.gz/download" -o net-snmp.tgz && \
   curl -L "https://raw.githubusercontent.com/librenms/librenms-agent/master/snmp/nginx-stats" -o /etc/snmp/nginx-stats && \
-  sed -i "s!http://127.0.0.1/nginx-status!http://nginx/nginx-status!g" /etc/snmp/nginx-stats && \  
+  curl -L "https://raw.githubusercontent.com/librenms/librenms-agent/master/snmp/distro" -o /usr/bin/distro && \
+  sed -i "s!http://127.0.0.1/nginx-status!http://nginx/nginx-status!g" /etc/snmp/nginx-stats && \
+  sed -i "s/^#!\/usr\/bin\/env bash/#!\/usr\/bin\/env sh/g" /usr/bin/distro && \
   chmod +x /etc/snmp/nginx-stats && \
+  chmod +x /usr/bin/distro && \
   tar zxvf net-snmp.tgz && \
   cd net-snmp-* && \
   find . -type f -print0 | xargs -0 sed -i 's/\"\/proc/\"\/host_proc/g' && \
   ./configure --prefix=/usr/local --disable-ipv6 --disable-snmpv1 --with-defaults && \
-  make && \
+  make -j$(nproc) && \
   make install && \
   cd .. && \
   rm -Rf ./net-snmp* && \
